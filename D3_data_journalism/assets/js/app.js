@@ -39,23 +39,27 @@ d3.csv("./assets/data/data.csv").then(function(censusData) {
 	var yLinearScale = d3.scaleLinear()
 		.domain([4, d3.max(censusData, d => d.healthcare)])
 		.range([height, 0]);
+
+	// Step 3: Create axis functions
+	// ==============================
+	var bottomAxis = d3.axisBottom(xLinearScale);
+	var leftAxis = d3.axisLeft(yLinearScale);
+
+	// Step 4: Append Axes to the chart
+	// ==============================
+	chartGroup.append("g")
+		.attr("transform", `translate(0, ${height})`)
+		.call(bottomAxis);
+
+	chartGroup.append("g")
+		.call(leftAxis);
 });
 
 
 
-// 	// Step 3: Create axis functions
-// 	// ==============================
-// 	var bottomAxis = d3.axisBottom(xLinearScale);
-// 	var leftAxis = d3.axisLeft(yLinearScale);
 
-// 	// Step 4: Append Axes to the chart
-// 	// ==============================
-// 	chartGroup.append("g")
-// 		.attr("transform", `translate(0, ${height})`)
-// 		.call(bottomAxis);
 
-// 	chartGroup.append("g")
-// 		.call(leftAxis);
+
 
 // 	// Step 5: Create Circles
 // 	// ==============================
