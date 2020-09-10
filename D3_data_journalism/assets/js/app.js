@@ -33,11 +33,11 @@ d3.csv("./assets/data/data.csv").then(function(censusData) {
 	// Step 2: Create scale functions
 	// ==============================
 	var xLinearScale = d3.scaleLinear()
-		.domain([8, d3.max(censusData, d => d.poverty)])
+		.domain([d3.min(censusData, d => d.poverty)-1, d3.max(censusData, d => d.poverty)+2])
 		.range([0, width]);
 
 	var yLinearScale = d3.scaleLinear()
-		.domain([4, d3.max(censusData, d => d.healthcare)])
+		.domain([d3.min(censusData, d => d.healthcare)-1, d3.max(censusData, d => d.healthcare)+2])
 		.range([height, 0]);
 
 	// Step 3: Create axis functions
@@ -53,7 +53,30 @@ d3.csv("./assets/data/data.csv").then(function(censusData) {
 
 	chartGroup.append("g")
 		.call(leftAxis);
-});
+
+	// Step 5: Create Circles and text inside circles
+	// ==============================
+	var circlesGroup = chartGroup.selectAll("circle")
+	.data(censusData)
+	.enter();
+	
+	circlesGroup
+	.append("circle")
+	.attr("cx", d => xLinearScale(d.poverty))
+	.attr("cy", d => yLinearScale(d.healthcare))
+	.attr("r", "12")
+	.attr("class", "stateCircle");
+	// .attr("class", d => "stateCircle " + d.abbr);
+
+	// Include state abbreviations in the circles
+	circlesGroup
+	.append("text")
+	.attr("x", d => xLinearScale(d.poverty))
+	.attr("y", d => yLinearScale(d.healthcare))
+	.attr("dy", "4")
+	.text(d => d.abbr)
+	.attr("class", "stateText");
+})
 
 
 
@@ -61,18 +84,6 @@ d3.csv("./assets/data/data.csv").then(function(censusData) {
 
 
 
-// 	// Step 5: Create Circles
-// 	// ==============================
-// 	var circlesGroup = chartGroup.selectAll("circle")
-// 	.data(hairData)
-// 	.enter()
-// 	.append("circle")
-// 	.attr("cx", d => xLinearScale(d.hair_length))
-// 	.attr("cy", d => yLinearScale(d.num_hits))
-// 	.attr("r", "15")
-// 	.attr("fill", "pink")
-// 	.attr("opacity", ".5")
-// 	// .text(d => d.band);
 
 // 	// Step 6: Initialize tool tip
 // 	// ==============================
