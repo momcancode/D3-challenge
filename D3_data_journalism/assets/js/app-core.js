@@ -56,11 +56,11 @@ d3.csv("./assets/data/data.csv").then(function(censusData) {
 
 	// Step 5: Create Circles and text inside circles
 	// ==============================
-	var circlesGroup = chartGroup.selectAll("circle")
+	var circlesTextGroup = chartGroup.selectAll("circle")
 	.data(censusData)
 	.enter();
 	
-	circlesGroup
+	var circlesGroup = circlesTextGroup
 	.append("circle")
 	.attr("cx", d => xLinearScale(d.poverty))
 	.attr("cy", d => yLinearScale(d.healthcare))
@@ -69,7 +69,7 @@ d3.csv("./assets/data/data.csv").then(function(censusData) {
 	// .attr("class", d => "stateCircle " + d.abbr);
 
 	// Include state abbreviations in the circles
-	circlesGroup
+	var textGroup = circlesTextGroup
 	.append("text")
 	.attr("x", d => xLinearScale(d.poverty))
 	.attr("y", d => yLinearScale(d.healthcare))
