@@ -191,7 +191,7 @@ d3.csv("./assets/data/data.csv").then(function(censusData, err) {
 	var circlesGroup = circlesTextGroup
 		.append("circle")
 		.attr("cx", d => xLinearScale(d[chosenXAxis]))
-		.attr("cy", d => yLinearScale(d.healthcare))
+		.attr("cy", d => yLinearScale(d[chosenYAxis]))
 		.attr("r", "12")
 		.attr("class", "stateCircle");
 
@@ -199,7 +199,7 @@ d3.csv("./assets/data/data.csv").then(function(censusData, err) {
 	var textGroup = circlesTextGroup
 		.append("text")
 		.attr("x", d => xLinearScale(d[chosenXAxis]))
-		.attr("y", d => yLinearScale(d.healthcare))
+		.attr("y", d => yLinearScale(d[chosenYAxis]))
 		.attr("dy", "4")
 		.text(d => d.abbr)
 		.attr("class", "stateText");
