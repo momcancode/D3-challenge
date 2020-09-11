@@ -25,6 +25,7 @@ var chartGroup = svg.append("g")
 
 // Initial Params
 var chosenXAxis = "poverty";
+var chosenYAxis = "obesity";
 
 // function used for updating x-scale var upon click on axis label
 function xScale(censusData, chosenXAxis) {
@@ -36,7 +37,18 @@ function xScale(censusData, chosenXAxis) {
     .range([0, width]);
 
   return xLinearScale;
+}
 
+// function used for updating y-scale var upon click on y axis label
+function yScale(censusData, chosenYAxis) {
+  // create scales
+  var yLinearScale = d3.scaleLinear()
+    .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8,
+      d3.max(censusData, d => d[chosenYAxis]) * 1.2
+    ])
+    .range([height, 0]);
+
+  return yLinearScale;
 }
 
 // function used for updating xAxis var upon click on axis label
@@ -56,9 +68,20 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
   circlesGroup.transition()
     .duration(1000)
-    .attr("cx", d => newXScale(d[chosenXAxis]));
+		.attr("cx", d => newXScale(d[chosenXAxis]));
 
   return circlesGroup;
+}
+
+// function used for updating circles group with a transition to
+// new circles
+function renderText(textGroup, newXScale, chosenXAxis) {
+		
+	textGroup.transition()
+		.duration(1000)
+		.attr("x", d => newXScale(d[chosenXAxis]));
+
+  return textGroup;
 }
 
 // // function used for updating circles group with new tooltip
@@ -138,54 +161,26 @@ d3.csv("./assets/data/data.csv").then(function(censusData, err) {
   chartGroup.append("g")
     .call(leftAxis);
 
-	// // append initial circles
-	// var circlesGroup = chartGroup.selectAll("circle")
-	// .data(censusData)
-	// .enter();
-	
-	// circlesGroup
-	// .append("circle")
-	// .attr("cx", d => xLinearScale(d.poverty))
-	// .attr("cy", d => yLinearScale(d.healthcare))
-	// .attr("r", "12")
-	// .attr("class", "stateCircle");
-
 	var circlesTextGroup = chartGroup.selectAll("circle")
-	.data(censusData)
-	.enter();
+		.data(censusData)
+		.enter();
 	
 	var circlesGroup = circlesTextGroup
-	.append("circle")
-	.attr("cx", d => xLinearScale(d.poverty))
-	.attr("cy", d => yLinearScale(d.healthcare))
-	.attr("r", "12")
-	.attr("class", "stateCircle");
+		.append("circle")
+		.attr("cx", d => xLinearScale(d[chosenXAxis]))
+		.attr("cy", d => yLinearScale(d.healthcare))
+		.attr("r", "12")
+		.attr("class", "stateCircle");
 
 	// Include state abbreviations in the circles
 	var textGroup = circlesTextGroup
-	.append("text")
-	.attr("x", d => xLinearScale(d.poverty))
-	.attr("y", d => yLinearScale(d.healthcare))
-	.attr("dy", "4")
-	.text(d => d.abbr)
-	.attr("class", "stateText");
+		.append("text")
+		.attr("x", d => xLinearScale(d[chosenXAxis]))
+		.attr("y", d => yLinearScale(d.healthcare))
+		.attr("dy", "4")
+		.text(d => d.abbr)
+		.attr("class", "stateText");
 
-
-	// // Include state abbreviations in the circles
-	// circlesGroup
-	// .append("text")
-	// .attr("x", d => xLinearScale(d.poverty))
-	// .attr("y", d => yLinearScale(d.healthcare))
-	// .attr("dy", "4")
-	// .text(d => d.abbr)
-	// .attr("class", "stateText");
-	
-	// circlesGroup
-	// .append("circle")
-	// .attr("cx", d => xLinearScale(d.poverty))
-	// .attr("cy", d => yLinearScale(d.healthcare))
-	// .attr("r", "12")
-	// .attr("class", "stateCircle");
 
   // Create group for two x-axis labels
   var labelsGroup = chartGroup.append("g")
@@ -237,8 +232,9 @@ d3.csv("./assets/data/data.csv").then(function(censusData, err) {
         // updates x axis with transition
         xAxis = renderAxes(xLinearScale, xAxis);
 
-        // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+        // updates circles and text with new x values
+				circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+				textGroup = renderText(textGroup, xLinearScale, chosenXAxis)
 
         // // updates tooltips with new info
         // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
