@@ -1,4 +1,4 @@
-# Data Journalism, SVG and D3
+# Data Journalism, D3 and SVG
 
 ## Where is the data from?
 
