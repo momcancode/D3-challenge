@@ -1,4 +1,4 @@
-# D3 Homework - Data Journalism, SVG and D3
+# Data Journalism, SVG and D3
 
 ## Where is the data from?
 
@@ -8,7 +8,7 @@ The data set included with the assignment is based on [2014 ACS 1-year estimates
 
 ## What did I do?
 
-### Core Assignment: D3 Dabbler
+### D3 Dabbler
 
 ![4-scatter](Images/4-scatter.jpg)
 
@@ -18,7 +18,7 @@ The data set included with the assignment is based on [2014 ACS 1-year estimates
 
 * Include state abbreviations in the circles.
 
-### Bonus: Impress the Boss
+### Impress the Boss
 
 ![7-animated-scatter](Images/7-animated-scatter.gif)
 
@@ -34,6 +34,5 @@ Using the `d3-tip.js` plugin developed by [Justin Palmer](https://github.com/Cag
 
 - - -
 
-### Copyright of the challenge
-
-Trilogy Education Services © 2019. All Rights Reserved.
+Contact:
+Email: thao.ph.ha@gmail.com
